@@ -183,11 +183,13 @@ namespace timer2 {
 			// listBox1
 			// 
 			this->listBox1->BackColor = System::Drawing::Color::LightCyan;
+			this->listBox1->Font = (gcnew System::Drawing::Font(L"‚l‚r ‚oƒSƒVƒbƒN", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(128)));
 			this->listBox1->FormattingEnabled = true;
-			this->listBox1->ItemHeight = 12;
+			this->listBox1->ItemHeight = 19;
 			this->listBox1->Location = System::Drawing::Point(271, 38);
 			this->listBox1->Name = L"listBox1";
-			this->listBox1->Size = System::Drawing::Size(120, 160);
+			this->listBox1->Size = System::Drawing::Size(120, 156);
 			this->listBox1->TabIndex = 7;
 			// 
 			// label_set
@@ -257,16 +259,17 @@ namespace timer2 {
 		}
 #pragma endregion
 		double time;
+		double add=0.015;
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 		time = 0;
-		label_time->Text = time.ToString("F");
+		disp_time();
 	}
 private: System::Void start_Click(System::Object^  sender, System::EventArgs^  e) {
 	timer1->Enabled = true;
 }
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-	time += 0.01;
-	label_time->Text = time.ToString("F");
+	time += add;
+	disp_time();
 }
 private: System::Void stop_Click(System::Object^  sender, System::EventArgs^  e) {
 	timer1->Enabled = false;
@@ -274,7 +277,7 @@ private: System::Void stop_Click(System::Object^  sender, System::EventArgs^  e)
 }
 private: System::Void reset_Click(System::Object^  sender, System::EventArgs^  e) {
 	time = 0;
-	label_time->Text = time.ToString("F");
+	disp_time();
 }
 private: System::Void add_button_Click(System::Object^  sender, System::EventArgs^  e) {
 	listBox1->Items->Add(label_time->Text);
@@ -290,21 +293,24 @@ private: System::Void del_button_Click(System::Object^  sender, System::EventArg
 }
 private: System::Void minute_Click(System::Object^  sender, System::EventArgs^  e) {
 	time += 60;
-	label_time->Text = time.ToString("F");
+	disp_time();
 
 }
 private: System::Void second_Click(System::Object^  sender, System::EventArgs^  e) {
 	time += 1;
-	label_time->Text = time.ToString("F");
+	disp_time();
 }
 private: System::Void label_set_Click(System::Object^  sender, System::EventArgs^  e) {
 	timer2->Enabled = true;
 }
 
 private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e) {
-	time -= 0.01;
-	label_time->Text = time.ToString("F");
+	time -= add;
+	disp_time();
 }
+		 private:void disp_time() {
+			 label_time->Text = time.ToString("0.000");
+		 }
 		 
 };
 }
