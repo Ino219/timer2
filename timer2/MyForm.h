@@ -93,9 +93,9 @@ namespace timer2 {
 			// pictureBox1
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::MistyRose;
-			this->pictureBox1->Location = System::Drawing::Point(73, 25);
+			this->pictureBox1->Location = System::Drawing::Point(17, 25);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(100, 50);
+			this->pictureBox1->Size = System::Drawing::Size(209, 50);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
 			// 
@@ -105,7 +105,7 @@ namespace timer2 {
 			this->label_time->BackColor = System::Drawing::Color::MistyRose;
 			this->label_time->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
-			this->label_time->Location = System::Drawing::Point(91, 38);
+			this->label_time->Location = System::Drawing::Point(68, 38);
 			this->label_time->Name = L"label_time";
 			this->label_time->Size = System::Drawing::Size(47, 21);
 			this->label_time->TabIndex = 1;
@@ -258,59 +258,77 @@ namespace timer2 {
 
 		}
 #pragma endregion
+		//システム内部で保持する時間
 		double time;
+		//timerでの増分秒数
 		double add=0.015;
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
+		//読み込み時に0を設定する
 		time = 0;
+		//表示
 		disp_time();
 	}
 private: System::Void start_Click(System::Object^  sender, System::EventArgs^  e) {
+	//タイマー稼働
 	timer1->Enabled = true;
 }
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+	//増分加算処理
 	time += add;
 	disp_time();
 }
 private: System::Void stop_Click(System::Object^  sender, System::EventArgs^  e) {
+	//タイマー停止
 	timer1->Enabled = false;
 	timer2->Enabled = false;
 }
 private: System::Void reset_Click(System::Object^  sender, System::EventArgs^  e) {
+	//時間を0にする
 	time = 0;
 	disp_time();
 }
 private: System::Void add_button_Click(System::Object^  sender, System::EventArgs^  e) {
+	//表示されている時間をリストに追加
 	listBox1->Items->Add(label_time->Text);
 }
 private: System::Void del_button_Click(System::Object^  sender, System::EventArgs^  e) {
+	//選択しているアイテムがなければすべてクリア
 	if (listBox1->SelectedItems->Count == 0) {
 		listBox1->Items->Clear();
 	}
+	//選択しているアイテムがあればそのアイテムだけを削除
 	else {
 		int del_temp = listBox1->Items->IndexOf(listBox1->SelectedItem);
 		listBox1->Items->RemoveAt(del_temp);
 	}
 }
 private: System::Void minute_Click(System::Object^  sender, System::EventArgs^  e) {
+	//時間に60秒を追加
 	time += 60;
 	disp_time();
 
 }
 private: System::Void second_Click(System::Object^  sender, System::EventArgs^  e) {
+	//時間に1秒を追加
 	time += 1;
 	disp_time();
 }
 private: System::Void label_set_Click(System::Object^  sender, System::EventArgs^  e) {
+	//減算タイマーを稼働
 	timer2->Enabled = true;
 }
 
 private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e) {
+	//時間を減算していく
 	time -= add;
 	disp_time();
 }
-		 private:void disp_time() {
-			 label_time->Text = time.ToString("0.000");
-		 }
+private:void disp_time() {
+	//表示処理
+	DateTime^ dt = gcnew DateTime();
+	dt = dt->AddSeconds(time);
+	label_time->Text = dt->ToString("HH:mm:ss.fff");
+}
 		 
 };
 }
